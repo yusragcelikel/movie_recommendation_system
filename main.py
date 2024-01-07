@@ -5,7 +5,7 @@ import seaborn as sns
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.tokenize import RegexpTokenizer
 from sklearn import preprocessing
-
+from scipy.sparse import hstack
 
 
 
@@ -66,6 +66,10 @@ def preprocess(movie_dataset_genres):
     # Applying scaler on our data and converting it into a dataframe
     mx_numerical_movie_dataset_genres = pd.DataFrame((scaler.fit_transform(numerical_movie_dataset_genres)))
     mx_numerical_movie_dataset_genres.columns = numerical_movie_dataset_genres.columns
+
+    # Adding numerical variables in the TF-IDF vector
+    IMDB_Rating = mx_numerical_movie_dataset_genres.IMDB_Rating.values[:, None]
+    X_train_dtm = hstack((text_counts, IMDB_Rating))
 
 
 
