@@ -52,3 +52,6 @@ def preprocess(movie_dataset_genres):
     token = RegexpTokenizer(r'[a-zA-Z]+')
 
     # Converting TfidfVector from the text
+    cnvrt_text = TfidfVectorizer(lowercase=True, stop_words='english', ngram_range=(1,1), tokenizer=token.tokenize)
+    text_counts = cnvrt_text.fit_transform(movie_dataset_genres['all_text'])
+
