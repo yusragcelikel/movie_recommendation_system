@@ -6,6 +6,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.tokenize import RegexpTokenizer
 from sklearn import preprocessing
 from scipy.sparse import hstack
+from sklearn.metrics.pairwise import cosine_similarity
+
 
 
 
@@ -44,32 +46,44 @@ print(movie_dataset_genres.info())
 
 
 #the function for preprocessing
-def preprocess(movie_dataset_genres):
+def preprocess(df):
     #combine all text columns
-    s = list(movie_dataset_genres.select_dtypes(include=['object']).columns) #store all object data type in list
+    s = list(df.select_dtypes(include=['object']).columns) #store all object data type in list
     s.remove('Series_Title') # Remove Title column
-    movie_dataset_genres['all_text'] = movie_dataset_genres[s].apply(lambda x: ','.join(x.dropna().astype(str)), axis=1) # Joining all object columns using commas into a column
+    df['all_text'] = df[s].apply(lambda x: ','.join(x.dropna().astype(str)), axis=1) # Joining all object columns using commas into a column
 
     # Create a tokenizer
     token = RegexpTokenizer(r'[a-zA-Z]+')
 
     # Converting TfidfVector from the text
     cnvrt_text = TfidfVectorizer(lowercase=True, stop_words='english', ngram_range=(1,1), tokenizer=token.tokenize)
-    text_counts = cnvrt_text.fit_transform(movie_dataset_genres['all_text'])
+    text_counts = cnvrt_text.fit_transform(df['all_text'])
 
     # Select numerical variables
-    numerical_movie_dataset_genres = movie_dataset_genres.select_dtypes(include=['float64', 'int64'])
+    numerical_df = df.select_dtypes(include=['float64', 'int64'])
 
     # Scaling Numerical variables
     scaler = preprocessing.MinMaxScaler(feature_range=(0,1))
 
     # Applying scaler on our data and converting it into a dataframe
-    mx_numerical_movie_dataset_genres = pd.DataFrame((scaler.fit_transform(numerical_movie_dataset_genres)))
-    mx_numerical_movie_dataset_genres.columns = numerical_movie_dataset_genres.columns
+    mx_numerical_df = pd.DataFrame((scaler.fit_transform(numerical_df)))
+    mx_numerical_df.columns = numerical_df.columns
 
     # Adding numerical variables in the TF-IDF vector
-    IMDB_Rating = mx_numerical_movie_dataset_genres.IMDB_Rating.values[:, None]
+    IMDB_Rating = mx_numerical_df.IMDB_Rating.values[:, None]
     X_train_dtm = hstack((text_counts, IMDB_Rating))
+
+    return X_train_dtm
+
+
+# preprocessing the data
+sparse_matrix = preprocess(movie_dataset_genres)
+print(sparse_matrix.shape)
+
+# Compute the sigmoid kernel
+sig = cosine_similarity(sparse_matrix, sparse_matrix)
+
+# Reverse mapping of indices and movie titles
 
 
 
