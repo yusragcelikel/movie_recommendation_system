@@ -25,11 +25,21 @@ del movie_dataset['Genre'] # delete column 'Genre' from original dataframe
 movie_dataset_genres = movie_dataset.join(genres) #stacked Series is joined with the original dataframe
 #print(movie_dataset_genres.head(8))
 
-# Count of movies according to genre using seaborn
-plt.figure(figsize=(15,5))
-sns.countplot(x='Genre', data=movie_dataset_genres)
-plt.xticks(rotation=90)
-plt.tight_layout() #to adjust the figure margins to ensure that all titles fit within the plot
-plt.show()
 
+
+# Count of movies according to genre using seaborn
+#plt.figure(figsize=(15,5))
+#sns.countplot(x='Genre', data=movie_dataset_genres)
+#plt.xticks(rotation=90)
+#plt.tight_layout() #to adjust the figure margins to ensure that all titles fit within the plot
+#plt.show()
+
+
+
+#the function for preprocessing
+def preprocess(movie_dataset_genres):
+    #combine all text columns
+    s = list(movie_dataset_genres.select_dtypes(include=['object']).columns) #store all object data type in list
+    s.remove('Series_Title') # Remove Title column
+    movie_dataset_genres['all_text'] = movie_dataset_genres[s].apply(lambda x: ','.join(x.dropna().astype(str)), axis=1) # Joining all object columns using commas into a column
 
