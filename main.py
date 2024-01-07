@@ -55,3 +55,7 @@ def preprocess(movie_dataset_genres):
     cnvrt_text = TfidfVectorizer(lowercase=True, stop_words='english', ngram_range=(1,1), tokenizer=token.tokenize)
     text_counts = cnvrt_text.fit_transform(movie_dataset_genres['all_text'])
 
+    # Select numerical variables
+    numerical_movie_dataset_genres = movie_dataset_genres.select_dtypes(include=['float64', 'int64'])
+
+
