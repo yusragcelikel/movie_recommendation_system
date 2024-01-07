@@ -81,10 +81,11 @@ sparse_matrix = preprocess(movie_dataset_genres)
 print(sparse_matrix.shape)
 
 # Compute the sigmoid kernel
-sig = cosine_similarity(sparse_matrix, sparse_matrix)
+sigmoid_kernel = cosine_similarity(sparse_matrix, sparse_matrix)
 
 # Reverse mapping of indices and movie titles
-
+indices = pd.Series(movie_dataset_genres.index, index=movie_dataset_genres['Series_Title']).drop_duplicates()
+print(indices.head(10))
 
 
 
