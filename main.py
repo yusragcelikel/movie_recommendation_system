@@ -63,3 +63,10 @@ def preprocess(movie_dataset_genres):
     # Scaling Numerical variables
     scaler = preprocessing.MinMaxScaler(feature_range=(0,1))
 
+    # Applying scaler on our data and converting it into a dataframe
+    mx_numerical_movie_dataset_genres = pd.DataFrame((scaler.fit_transform(numerical_movie_dataset_genres)))
+    mx_numerical_movie_dataset_genres.columns = numerical_movie_dataset_genres.columns
+
+
+
+
