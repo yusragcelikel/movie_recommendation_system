@@ -2,6 +2,10 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.feature_extraction.text import TfidfVectorizer
+from nltk.tokenize import RegexpTokenizer
+
+
 
 movie_dataset = pd.read_csv("/Users/yusragokcecelikel/Documents/GitHub/movie_recommendation_system/imdb_top_1000.csv")
 movie_dataset = movie_dataset.iloc[:,1:] #remove Poster_Link column
@@ -24,6 +28,7 @@ genres.name = 'Genre' # Assign name to column
 del movie_dataset['Genre'] # delete column 'Genre' from original dataframe
 movie_dataset_genres = movie_dataset.join(genres) #stacked Series is joined with the original dataframe
 #print(movie_dataset_genres.head(8))
+print(movie_dataset_genres.info())
 
 
 
@@ -43,3 +48,7 @@ def preprocess(movie_dataset_genres):
     s.remove('Series_Title') # Remove Title column
     movie_dataset_genres['all_text'] = movie_dataset_genres[s].apply(lambda x: ','.join(x.dropna().astype(str)), axis=1) # Joining all object columns using commas into a column
 
+    # Create a tokenizer
+    token = RegexpTokenizer(r'[a-zA-Z]+')
+
+    # Converting TfidfVector from the text
