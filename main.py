@@ -78,14 +78,25 @@ def preprocess(df):
 
 # preprocessing the data
 sparse_matrix = preprocess(movie_dataset_genres)
-print(sparse_matrix.shape)
+#print(sparse_matrix.shape)
 
 # Compute the sigmoid kernel
 sigmoid_kernel = cosine_similarity(sparse_matrix, sparse_matrix)
 
 # Reverse mapping of indices and movie titles
 indices = pd.Series(movie_dataset_genres.index, index=movie_dataset_genres['Series_Title']).drop_duplicates()
-print(indices.head(10))
+#print(indices.head(10))
 
 
+# Writing a function to get recommendations based on the similarity score
+def give_recommendation(title, sig=sigmoid_kernel):
+    idx = indices[title] # Get the index corresponding to original_title
+    sig_scores = list(enumerate(sig[idx])) # Get the pairwise similarity scores
+    sig_scores = sorted(sig_scores, key=lambda x: x[1], reverse=True) # Sort the movies
+    sig_scores = sig_scores[1:11] # Scores of the 10 most similar movies
+    movie_indices = [i[0] for i in sig_scores] # Movie indices
+    top_10_most_similar = movie_dataset_genres['Series_Title'].iloc[movie_indices]  # Top 10 most similar movies
+    return top_10_most_similar
+
+print(give_recommendation("The Matrix", sig = sigmoid_kernel))
 
