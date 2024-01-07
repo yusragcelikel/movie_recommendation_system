@@ -23,6 +23,13 @@ genres.index = genres.index.droplevel(-1) #to drop the last level of the index
 genres.name = 'Genre' # Assign name to column
 del movie_dataset['Genre'] # delete column 'Genre' from original dataframe
 movie_dataset_genres = movie_dataset.join(genres) #stacked Series is joined with the original dataframe
-print(movie_dataset_genres.head(8))
+#print(movie_dataset_genres.head(8))
+
+# Count of movies according to genre using seaborn
+plt.figure(figsize=(15,5))
+sns.countplot(x='Genre', data=movie_dataset_genres)
+plt.xticks(rotation=90)
+plt.tight_layout() #to adjust the figure margins to ensure that all titles fit within the plot
+plt.show()
 
 
