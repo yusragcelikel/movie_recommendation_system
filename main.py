@@ -89,14 +89,19 @@ indices = pd.Series(movie_dataset_genres.index, index=movie_dataset_genres['Seri
 
 
 # Writing a function to get recommendations based on the similarity score
-def give_recommendation(title, sig=sigmoid_kernel):
-    idx = indices[title] # Get the index corresponding to original_title
-    sig_scores = list(enumerate(sig[idx])) # Get the pairwise similarity scores
-    sig_scores = sorted(sig_scores, key=lambda x: x[1], reverse=True) # Sort the movies
-    sig_scores = sig_scores[1:11] # Scores of the 10 most similar movies
-    movie_indices = [i[0] for i in sig_scores] # Movie indices
-    top_10_most_similar = movie_dataset_genres['Series_Title'].iloc[movie_indices]  # Top 10 most similar movies
-    return top_10_most_similar
+def give_recommendation(sig=sigmoid_kernel):
+    title = input("Enter the movie title: ")  # Get title from user input
+    try:
+        idx = indices[title] # Get the index corresponding to original_title
+        sig_scores = list(enumerate(sig[idx])) # Get the pairwise similarity scores
+        sig_scores = sorted(sig_scores, key=lambda x: x[1], reverse=True) # Sort the movies
+        sig_scores = sig_scores[1:11] # Scores of the 10 most similar movies
+        movie_indices = [i[0] for i in sig_scores] # Movie indices
+        top_10_most_similar = movie_dataset_genres['Series_Title'].iloc[movie_indices]  # Top 10 most similar movies
+        return top_10_most_similar
+    except KeyError:
+        return "Movie not found in dataset. Please check the title and try again."
 
-print(give_recommendation("The Matrix", sig = sigmoid_kernel))
+#the_recommendations = give_recommendation("The Matrix", sig = sigmoid_kernel)
+print(give_recommendation().drop_duplicates()) #print the recommendations while dropping the duplicates
 
