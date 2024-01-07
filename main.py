@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.tokenize import RegexpTokenizer
+from sklearn import preprocessing
+
 
 
 
@@ -58,4 +60,6 @@ def preprocess(movie_dataset_genres):
     # Select numerical variables
     numerical_movie_dataset_genres = movie_dataset_genres.select_dtypes(include=['float64', 'int64'])
 
+    # Scaling Numerical variables
+    scaler = preprocessing.MinMaxScaler(feature_range=(0,1))
 
