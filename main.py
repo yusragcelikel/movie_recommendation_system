@@ -33,7 +33,7 @@ del movie_dataset['Genre'] # delete column 'Genre' from original dataframe
 movie_dataset_genres = movie_dataset.join(genres) #stacked Series is joined with the original dataframe
 #print(movie_dataset_genres.head(8))
 print(movie_dataset_genres.info())
-
+print(movie_dataset['Series_Title'].head(20))
 
 
 # Count of movies according to genre using seaborn
@@ -78,7 +78,7 @@ def preprocess(df):
 
 # preprocessing the data
 sparse_matrix = preprocess(movie_dataset_genres)
-#print(sparse_matrix.shape)
+#print("\nsparse_matrix dimensions: \n", sparse_matrix.shape)
 
 # Compute the sigmoid kernel
 sigmoid_kernel = cosine_similarity(sparse_matrix, sparse_matrix)
