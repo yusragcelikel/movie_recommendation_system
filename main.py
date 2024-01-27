@@ -103,5 +103,5 @@ def give_recommendation(sig=sigmoid_kernel):
         return "Movie not found in dataset. Please check the title and try again."
 
 #the_recommendations = give_recommendation("The Matrix", sig = sigmoid_kernel)
-print(give_recommendation().drop_duplicates()) #print the recommendations while dropping the duplicates
+print(give_recommendation()) #print the recommendations while dropping the duplicates
 
